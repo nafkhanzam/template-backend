@@ -4,7 +4,6 @@ import {ApolloServer} from "apollo-server-express";
 import express from "express";
 import {graphqlUploadExpress} from "graphql-upload";
 import http from "http";
-import IORedis, {RedisOptions} from "ioredis";
 import {createApiEndpoint} from "./api";
 import {Context} from "./context";
 import {env, isDevelopment} from "./env";
