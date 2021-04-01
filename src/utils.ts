@@ -10,9 +10,9 @@ export const jwtUtils = new JWTUtils(
 
 export const validJwt = (
   jwt: AccessTokenJWT | null,
-  role?: Role,
+  ...roles: Role[]
 ): AccessTokenJWT => {
-  if (!jwt || (role && jwt.role !== role)) {
+  if (!jwt || (roles.length && !roles.includes(jwt.role!))) {
     throw errorUtils.createGQLError(ErrorStatus.NOT_AUTHORIZED);
   }
   return jwt;
