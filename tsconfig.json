@@ -5,10 +5,12 @@
     "target": "es2018",
     "module": "commonjs",
     "strict": true,
+    "lib": ["esnext"],
     "outDir": "./build",
     "rootDir": "./",
     "baseUrl": "./",
     "noErrorTruncation": true,
+    "jsx": "react-jsx",
     "paths": {
       "@/*": ["src/*"],
       "@test/*": ["test/*"]

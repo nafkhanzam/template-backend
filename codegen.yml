@@ -2,8 +2,8 @@ overwrite: true
 generates:
   test/graphql.ts:
     documents: test/queries.graphql
-    schema: "http://localhost:9999/graphql"
+    schema: "node_modules/@types/nexus-typegen/api.graphql"
     plugins:
       - "typescript"
       - "typescript-operations"
-      - "typescript-graphql-request"
+      - "typescript-generic-sdk"
