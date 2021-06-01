@@ -19,7 +19,7 @@
     "ts-node-dev": "ts-node-dev -r tsconfig-paths/register --transpile-only",
     "modelgen": "pal g",
     "gqlgen": "graphql-codegen --config codegen.yml",
-    "dbpush": "yarn prisma db push --preview-feature",
+    "dbpush": "yarn prisma db push",
     "types": "yarn ts-node generateExports",
     "seed": "yarn ts-node seeder",
     "tc": "tsc --build tsconfig.watch.json --watch"
