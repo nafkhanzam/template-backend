@@ -1,5 +1,5 @@
-import {PrismaClient} from "@prisma/client";
 import {log, logExtension} from "@nafkhanzam/backend-utils";
+import {PrismaClient} from "@prisma/client";
 import {ApolloServer} from "apollo-server-express";
 import cors from "cors";
 import express from "express";
@@ -8,12 +8,12 @@ import http from "http";
 import path from "path";
 import {createApiEndpoint} from "./api";
 import {Api} from "./client/api";
-import {pubsub, redis} from "./common/redis";
-import {jwtUtils} from "./common/utils";
+import {jwtUtils, pubsub, redis} from "./common";
 import {DBConfig} from "./config/config";
 import {constants} from "./constants";
 import {Context} from "./context";
 import {schema} from "./schema";
+import * as utils from "./common";
 
 export const createServer = (db: PrismaClient) => {
   const apolloServer = new ApolloServer({
@@ -27,6 +27,7 @@ export const createServer = (db: PrismaClient) => {
         redis,
         api: new Api(),
         conf: new DBConfig(db),
+        utils,
       };
     },
     formatError: (err) => ({
