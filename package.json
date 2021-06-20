@@ -25,8 +25,8 @@
     "tc": "tsc --build tsconfig.watch.json --watch"
   },
   "dependencies": {
-    "@nafkhanzam/backend-utils": "^0.0.43",
-    "@nafkhanzam/common-utils": "^0.0.41",
+    "@nafkhanzam/backend-utils": "^0.0.46",
+    "@nafkhanzam/common-utils": "^0.0.44",
     "@prisma/client": "^2.23.0",
     "apollo-server-express": "^2.25.0",
     "express": "^4.17.1",
