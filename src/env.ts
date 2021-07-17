@@ -6,7 +6,6 @@ const keys = [
   "JWT_LOGIN_KEY",
   "NODE_ENV",
   "PORT",
-  "REDIS_HOST",
   "PUBLIC_BASE_URL",
 ] as const;
 

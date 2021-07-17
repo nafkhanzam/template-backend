@@ -13,10 +13,10 @@ import {DBConfig} from "./config/config";
 import {constants} from "./constants";
 import {ContextMiddleware} from "./context";
 import * as utils from "@/common";
-import {ApolloServer} from "apollo-server-express";
 
 type ReturnContext = {
-  apolloServer: ApolloServer | null;
+  graphqlApp: GraphqlApplication | null;
+  restApiApp: RestApiApplication | null;
   httpServer: http.Server;
 };
 
@@ -50,7 +50,7 @@ export const createServer = async (
   restApiApp.applyMiddleware(app);
 
   app.use(
-    "/" + constants.PUBLIC_FOLDER,
+    constants.PUBLIC_URL,
     express.static(path.join(process.cwd(), constants.PUBLIC_FOLDER)),
   );
 
@@ -60,5 +60,5 @@ export const createServer = async (
   await graphqlApp.apolloServer.start();
   graphqlApp.applyMiddleware(app);
 
-  return {apolloServer: graphqlApp.apolloServer, httpServer};
+  return {graphqlApp, restApiApp, httpServer};
 };

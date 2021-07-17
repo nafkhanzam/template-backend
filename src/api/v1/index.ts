@@ -5,6 +5,7 @@ import {BaseApi} from "../base";
 export class ApiV1 extends BaseApi {
   readonly hello = this.factory.build({
     method: "get",
+    description: "Test Hello Endpoint.",
     input: zod.object({}),
     output: zod.object({
       jwt: accessTokenJWTValidator.nullable(),

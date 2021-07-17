@@ -11,6 +11,7 @@
     "baseUrl": "./",
     "noErrorTruncation": true,
     "jsx": "react-jsx",
+    "resolveJsonModule": true,
     "paths": {
       "@/*": ["src/*"],
       "@test/*": ["test/*"]

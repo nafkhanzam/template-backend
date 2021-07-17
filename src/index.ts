@@ -1,7 +1,7 @@
 import {log} from "@nafkhanzam/backend-utils";
 import {PrismaClient} from "@prisma/client";
-import {createServer} from "./server";
 import {env, isDevelopment} from "./env";
+import {createServer} from "./server";
 
 const db = new PrismaClient({
   log: isDevelopment() ? ["info", "warn", "error"] : undefined,
@@ -9,20 +9,20 @@ const db = new PrismaClient({
 });
 
 (async () => {
-  const {apolloServer, httpServer} = await createServer(db);
+  const {graphqlApp, restApiApp, httpServer} = await createServer(db);
 
-  httpServer.listen(env.PORT, () => {
-    if (apolloServer) {
-      if (apolloServer.graphqlPath) {
+  if (!!process.env.GENERATE_OPEN_API) {
+    await restApiApp?.generateOpenApi();
+  } else {
+    httpServer.listen(env.PORT, () => {
+      log.info(`🚀 Rest API Service is ready at http://localhost:${env.PORT}`);
+
+      const graphqlPath = graphqlApp?.apolloServer?.graphqlPath;
+      if (graphqlPath) {
         log.info(
-          `🚀 GraphQL service ready at http://localhost:${env.PORT}${apolloServer.graphqlPath}`,
+          `🚀 GraphQL Service is ready at http://localhost:${env.PORT}${graphqlPath}`,
         );
       }
-      // if (apolloServer.subscriptionsPath) {
-      //   log.info(
-      //     `🚀 Subscriptions ready at ws://localhost:${env.PORT}${apolloServer.subscriptionsPath}`,
-      //   );
-      // }
-    }
-  });
+    });
+  }
 })();
