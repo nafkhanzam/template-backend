@@ -17,7 +17,7 @@ export class ApiV1 extends BaseApi {
       jwt: accessTokenJWTValidator.nullable(),
     }),
     handler: async ({options, logger}) => {
-      logger.info("TEST INFO");
+      logger.info("test log");
       return {jwt: options.jwt};
     },
   });
