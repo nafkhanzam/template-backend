@@ -1,12 +1,14 @@
-import {createTestClient} from "apollo-server-integration-testing";
+import {ApolloServer} from "apollo-server-express";
 import {DocumentNode} from "graphql";
+import {Headers} from "apollo-server-env";
 import {getSdk, Requester} from "./graphql";
 
 const validDocDefOps = ["mutation", "query", "subscription"];
 
-type TestClient = ReturnType<typeof createTestClient>;
-
-export function getSdkApollo(client: TestClient) {
+export function getSdkApollo(
+  client: ApolloServer,
+  headers: Record<string, string> = {},
+) {
   const requester: Requester = async <R, V>(
     doc: DocumentNode,
     variables?: V,
@@ -33,41 +35,30 @@ export function getSdkApollo(client: TestClient) {
       );
     }
 
-    switch (definition.operation) {
-      case "mutation": {
-        const response = await client.mutate(doc, {variables: variables ?? {}});
-
-        if (response.errors) {
-          throw response;
-        }
-
-        if (response.data === undefined || response.data === null) {
-          throw new Error("No data presented in the GraphQL response");
-        }
-
-        return response.data as any;
-      }
-      case "query": {
-        const response = await client.query(doc, {
-          variables: variables ?? {},
-        });
-
-        if (response.errors) {
-          throw response;
-        }
-
-        if (response.data === undefined || response.data === null) {
-          throw new Error("No data presented in the GraphQL response");
-        }
-
-        return response.data as any;
-      }
-      case "subscription": {
-        throw new Error(
-          "Subscription requests through SDK interface are not supported",
-        );
-      }
+    const httpHeaders = new Headers();
+    for (const [key, value] of Object.entries(headers)) {
+      httpHeaders.append(key, value);
     }
+    const response = await client.executeOperation({
+      operationName: definition.operation,
+      query: doc,
+      variables: variables ?? {},
+      http: {
+        method: "POST",
+        headers: httpHeaders,
+        url: client.graphqlPath,
+      },
+    });
+
+    if (response.errors) {
+      throw response;
+    }
+
+    if (response.data === undefined || response.data === null) {
+      throw new Error("No data presented in the GraphQL response");
+    }
+
+    return response.data as any;
   };
 
   return getSdk(requester);

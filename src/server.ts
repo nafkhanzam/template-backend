@@ -20,16 +20,9 @@ type ReturnContext = {
   httpServer: http.Server;
 };
 
-export const createServer = async (
-  db: PrismaClient,
-): Promise<ReturnContext> => {
-  const app = express();
-
-  app.use(cors());
-  app.use(express.json());
-  app.use(graphqlUploadExpress());
-
-  const getContext: ContextMiddleware = ({req}) => {
+export const getGetContext =
+  (db: PrismaClient): ContextMiddleware =>
+  ({req}) => {
     return {
       db,
       prisma: db,
@@ -41,6 +34,17 @@ export const createServer = async (
       utils,
     };
   };
+
+export const createServer = async (
+  db: PrismaClient,
+): Promise<ReturnContext> => {
+  const app = express();
+
+  app.use(cors());
+  app.use(express.json());
+  app.use(graphqlUploadExpress());
+
+  const getContext = getGetContext(db);
 
   const restApiApp = new RestApiApplication(db, getContext);
   restApiApp.applyMiddleware(app);
