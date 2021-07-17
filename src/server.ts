@@ -8,19 +8,21 @@ import path from "path";
 import {GraphqlApplication} from "./app/graphql-application";
 import {RestApiApplication} from "./app/rest-api-application";
 import {ClientApi} from "./client/api";
-import {jwtUtils, pubsub, redis} from "./common";
+import {jwtUtils} from "./common";
 import {DBConfig} from "./config/config";
 import {constants} from "./constants";
 import {ContextMiddleware} from "./context";
 import * as utils from "@/common";
-import { ApolloServer } from "apollo-server-express";
+import {ApolloServer} from "apollo-server-express";
 
 type ReturnContext = {
-  apolloServer: ApolloServer | null,
-  httpServer: http.Server,
-}
+  apolloServer: ApolloServer | null;
+  httpServer: http.Server;
+};
 
-export const createServer = (db: PrismaClient): ReturnContext => {
+export const createServer = async (
+  db: PrismaClient,
+): Promise<ReturnContext> => {
   const app = express();
 
   app.use(cors());
@@ -33,8 +35,6 @@ export const createServer = (db: PrismaClient): ReturnContext => {
       prisma: db,
       jwt: req ? jwtUtils.headerToJwtObj(req.headers.authorization) : null,
       log,
-      pubsub,
-      redis,
       api: new ClientApi(),
       conf: new DBConfig(db),
       utils,
@@ -52,8 +52,8 @@ export const createServer = (db: PrismaClient): ReturnContext => {
   const httpServer = http.createServer(app);
 
   const graphqlApp = new GraphqlApplication(db, getContext);
+  await graphqlApp.apolloServer.start();
   graphqlApp.applyMiddleware(app);
-  graphqlApp.installSubscriptionHandlers(httpServer);
 
   return {apolloServer: graphqlApp.apolloServer, httpServer};
 };

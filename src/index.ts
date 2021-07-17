@@ -8,19 +8,21 @@ const db = new PrismaClient({
   errorFormat: isDevelopment() ? "pretty" : undefined,
 });
 
-const {apolloServer, httpServer} = createServer(db);
+(async () => {
+  const {apolloServer, httpServer} = await createServer(db);
 
-httpServer.listen(env.PORT, () => {
-  if (apolloServer) {
-    if (apolloServer.graphqlPath) {
-      log.info(
-        `🚀 GraphQL service ready at http://localhost:${env.PORT}${apolloServer.graphqlPath}`,
-      );
+  httpServer.listen(env.PORT, () => {
+    if (apolloServer) {
+      if (apolloServer.graphqlPath) {
+        log.info(
+          `🚀 GraphQL service ready at http://localhost:${env.PORT}${apolloServer.graphqlPath}`,
+        );
+      }
+      // if (apolloServer.subscriptionsPath) {
+      //   log.info(
+      //     `🚀 Subscriptions ready at ws://localhost:${env.PORT}${apolloServer.subscriptionsPath}`,
+      //   );
+      // }
     }
-    if (apolloServer.subscriptionsPath) {
-      log.info(
-        `🚀 Subscriptions ready at ws://localhost:${env.PORT}${apolloServer.subscriptionsPath}`,
-      );
-    }
-  }
-});
+  });
+})();

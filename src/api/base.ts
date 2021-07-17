@@ -1,7 +1,7 @@
-import {Context} from "@/context";
+import {FactoryContext} from "@/context";
 import {Routing} from "express-zod-api";
 
 export abstract class BaseApi {
-  constructor(protected ctx: Context) {}
+  constructor(protected factory: FactoryContext) {}
   abstract getRouting(): Routing;
 }

@@ -1,10 +1,13 @@
 import {env} from "@/env";
 import {errorUtils, JWTUtils} from "@nafkhanzam/backend-utils";
-import {ErrorStatus, zod} from "@nafkhanzam/common-utils";
+import {ErrorStatus} from "@nafkhanzam/common-utils";
+import {zod} from "@/lib";
 
 export enum Role {
   USER = "USER",
 }
+
+export const JWT_COOKIE_KEY = "authorization";
 
 export const accessTokenJWTValidator = zod.object({
   serial: zod.string(),

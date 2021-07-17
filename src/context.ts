@@ -1,12 +1,11 @@
 import {Logger} from "@nafkhanzam/backend-utils";
 import {PrismaClient} from "@prisma/client";
-import {Redis} from "ioredis";
+import * as express from "express";
+import {EndpointsFactory} from "express-zod-api";
 import {ClientApi} from "./client/api";
+import * as utils from "./common";
 import {AccessTokenJWT} from "./common";
 import {DBConfig} from "./config/config";
-import {MyPubSub} from "./graphql/subscription";
-import * as utils from "./common";
-import * as express from "express";
 
 export type ContextMiddleware = (conn: {
   req: express.Request;
@@ -18,9 +17,9 @@ export type Context = {
   prisma: PrismaClient;
   jwt: AccessTokenJWT | null;
   log: Logger;
-  pubsub: MyPubSub;
-  redis: Redis;
   api: ClientApi;
   conf: DBConfig;
   utils: typeof utils;
 };
+
+export type FactoryContext = EndpointsFactory<{}, Context>;

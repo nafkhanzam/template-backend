@@ -1,5 +1,4 @@
-import {GraphQLUpload} from "apollo-server-express";
-import {FileUpload} from "graphql-upload";
+import {FileUpload, GraphQLUpload} from "graphql-upload";
 import {asNexusMethod} from "nexus";
 import path from "path";
 
