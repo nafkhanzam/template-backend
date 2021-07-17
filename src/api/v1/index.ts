@@ -1,18 +1,11 @@
 import {accessTokenJWTValidator} from "@/common";
 import {zod} from "@/lib";
-import {Routing} from "express-zod-api";
 import {BaseApi} from "../base";
 
 export class ApiV1 extends BaseApi {
-  getRouting(): Routing {
-    return {
-      hello: this.hello,
-    };
-  }
-
-  hello = this.factory.build({
+  readonly hello = this.factory.build({
     method: "get",
-    input: zod.object({}).passthrough(),
+    input: zod.object({}),
     output: zod.object({
       jwt: accessTokenJWTValidator.nullable(),
       raw: zod.string().nullable(),
