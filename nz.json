@@ -1,0 +1,12 @@
+{
+  "gen-exports": [
+    {
+      "globs": ["src/common/**/*.ts"],
+      "output": "src/common/index.ts"
+    },
+    {
+      "globs": ["src/graphql/**/*.ts"],
+      "output": "src/graphql/index.ts"
+    }
+  ]
+}

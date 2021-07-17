@@ -1,8 +1,8 @@
-import {PrismaClient} from "@prisma/client";
-import {Router} from "express";
+import {Routing} from "express-zod-api";
+import {BaseApi} from "../base";
 
-export const createV1Endpoint = (db: PrismaClient) => {
-  const router = Router();
-
-  return router;
-};
+export class ApiV1 extends BaseApi {
+  getRouting(): Routing {
+    return {};
+  }
+}

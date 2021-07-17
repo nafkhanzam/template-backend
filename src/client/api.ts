@@ -1,1 +1,1 @@
-export class Api {}
+export class ClientApi {}

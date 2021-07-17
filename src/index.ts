@@ -1,6 +1,6 @@
 import {log} from "@nafkhanzam/backend-utils";
 import {PrismaClient} from "@prisma/client";
-import {createServer} from "./apollo-server";
+import {createServer} from "./server";
 import {env, isDevelopment} from "./env";
 
 const db = new PrismaClient({
@@ -11,10 +11,16 @@ const db = new PrismaClient({
 const {apolloServer, httpServer} = createServer(db);
 
 httpServer.listen(env.PORT, () => {
-  log.info(
-    `🚀 GraphQL service ready at http://localhost:${env.PORT}${apolloServer.graphqlPath}`,
-  );
-  log.info(
-    `🚀 Subscriptions ready at ws://localhost:${env.PORT}${apolloServer.subscriptionsPath}`,
-  );
+  if (apolloServer) {
+    if (apolloServer.graphqlPath) {
+      log.info(
+        `🚀 GraphQL service ready at http://localhost:${env.PORT}${apolloServer.graphqlPath}`,
+      );
+    }
+    if (apolloServer.subscriptionsPath) {
+      log.info(
+        `🚀 Subscriptions ready at ws://localhost:${env.PORT}${apolloServer.subscriptionsPath}`,
+      );
+    }
+  }
 });
