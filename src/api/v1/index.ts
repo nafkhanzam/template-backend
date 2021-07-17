@@ -15,10 +15,11 @@ export class ApiV1 extends BaseApi {
     input: zod.object({}).passthrough(),
     output: zod.object({
       jwt: accessTokenJWTValidator.nullable(),
+      raw: zod.string().nullable(),
     }),
     handler: async ({options, logger}) => {
       logger.info("test log");
-      return {jwt: options.jwt};
+      return {jwt: options.jwt, raw: options.jwtRaw};
     },
   });
 }

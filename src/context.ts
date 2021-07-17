@@ -16,6 +16,7 @@ export type Context = {
   db: PrismaClient;
   prisma: PrismaClient;
   jwt: AccessTokenJWT | null;
+  jwtRaw: string | null;
   log: Logger;
   api: ClientApi;
   conf: DBConfig;

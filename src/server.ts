@@ -8,7 +8,7 @@ import path from "path";
 import {GraphqlApplication} from "./app/graphql-application";
 import {RestApiApplication} from "./app/rest-api-application";
 import {ClientApi} from "./client/api";
-import {jwtUtils} from "./common";
+import {jwtUtils, JWT_COOKIE_KEY} from "./common";
 import {DBConfig} from "./config/config";
 import {constants} from "./constants";
 import {ContextMiddleware} from "./context";
@@ -33,7 +33,8 @@ export const createServer = async (
     return {
       db,
       prisma: db,
-      jwt: req ? jwtUtils.headerToJwtObj(req.headers.authorization) : null,
+      jwt: req ? jwtUtils.headerToJwtObj(req.headers[JWT_COOKIE_KEY]) : null,
+      jwtRaw: req.headers[JWT_COOKIE_KEY] ?? null,
       log,
       api: new ClientApi(),
       conf: new DBConfig(db),
