@@ -6,20 +6,12 @@ import {BaseApp} from "./base";
 export class RestApiApplication extends BaseApp {
   applyMiddleware(app: express.Express): void {
     const config: ConfigType = {
-      server: {
-        listen: 8080,
-      },
+      app,
       cors: true,
       logger: log,
     };
 
-    attachRouting(
-      {
-        app,
-        ...config,
-      },
-      this.getRouting(),
-    );
+    attachRouting(config, this.getRouting());
   }
 
   getRouting(): Routing {
