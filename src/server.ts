@@ -22,7 +22,7 @@ type ReturnContext = {
 
 export const getGetContext =
   (db: PrismaClient): ContextMiddleware =>
-  ({req}) => {
+  ({req, res}) => {
     return {
       db,
       prisma: db,
@@ -32,6 +32,8 @@ export const getGetContext =
       api: new ClientApi(),
       conf: new DBConfig(db),
       utils,
+      req,
+      res,
     };
   };
 

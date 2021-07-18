@@ -21,6 +21,8 @@ export type Context = {
   api: ClientApi;
   conf: DBConfig;
   utils: typeof utils;
+  req: express.Request;
+  res: express.Response;
 };
 
 export type FactoryContext = EndpointsFactory<{}, Context>;
