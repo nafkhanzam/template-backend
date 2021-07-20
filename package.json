@@ -16,7 +16,7 @@
     "start": "node -r ./tsconfig-bootstrap-paths.js build/src",
     "test": "cross-env NODE_ENV=test jest --runInBand",
     "ts-node": "ts-node -r tsconfig-paths/register --transpile-only",
-    "ts-node-dev": "ts-node-dev -r tsconfig-paths/register --transpile-only",
+    "ts-node-dev": "ts-node-dev -r tsconfig-paths/register --transpile-only --exit-child",
     "modelgen": "pal g",
     "gqlgen": "graphql-codegen --config codegen.yml",
     "dbpush": "yarn prisma db push",
