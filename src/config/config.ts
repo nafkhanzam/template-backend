@@ -6,7 +6,14 @@ export type ConfigType<T> = {
   defaultValue: T;
 };
 
-const configs = {} as const;
+const __placeholder__: ConfigType<boolean> = {
+  defaultValue: true,
+  validator: zod.boolean(),
+};
+
+const configs = {
+  ok: __placeholder__,
+} as const;
 
 export class DBConfig {
   constructor(private db: PrismaClient) {}
@@ -22,11 +29,9 @@ export class DBConfig {
       rejectOnNotFound: false,
     });
 
-    // TODO: Find better solution!
     const valid = validatorUtils.validateSafe(validator, conf?.value);
     let value = defaultValue;
     if (valid.success) {
-      // @ts-expect-error need to find solution
       value = valid.data;
     }
     return value;
