@@ -11,6 +11,10 @@ generator client {
   previewFeatures = ["orderByRelation"]
 }
 
+generator dbml {
+  provider = "prisma-dbml-generator"
+}
+
 model Config {
   key   String @id
   value Json
