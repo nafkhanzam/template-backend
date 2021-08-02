@@ -15,14 +15,14 @@ beforeAll(async () => {
   const password = "password";
   const passwordHash = await hashUtils.hash(password);
 
-  // TODO: Login using agent
+  await db.user.create({
+    data: {
+      username,
+      passwordHash,
+    },
+  });
 
-  // await db.user.create({
-  //   data: {
-  //     username,
-  //     passwordHash,
-  //   },
-  // });
+  // TODO: Login using agent
 
   // await apitest.post("/v1/auth/login").send({username, password});
 });
