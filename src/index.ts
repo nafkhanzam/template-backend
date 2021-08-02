@@ -9,10 +9,15 @@ const db = new PrismaClient({
 });
 
 (async () => {
-  const {graphqlApp, restApiApp, httpServer} = await createServer(db);
+  const {graphqlAppPromise, restApiApp, httpServer} = createServer(db);
+  const graphqlApp = await graphqlAppPromise;
 
   if (!!process.env.GENERATE_OPEN_API) {
-    await restApiApp?.generateOpenApi();
+    if (restApiApp) {
+      await restApiApp.generateOpenApi();
+    } else {
+      throw new Error("Rest API Application is not found!");
+    }
   } else {
     httpServer.listen(env.PORT, () => {
       log.info(`🚀 Rest API Service is ready at http://localhost:${env.PORT}`);

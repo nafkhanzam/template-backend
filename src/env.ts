@@ -1,20 +1,42 @@
 import {log} from "@nafkhanzam/backend-utils";
 import dotenv from "dotenv-flow";
 
-const keys = [
-  "DATABASE_URL",
-  "JWT_LOGIN_KEY",
-  "NODE_ENV",
-  "PORT",
-  "PUBLIC_BASE_URL",
-] as const;
+export const env = {
+  DATABASE_URL: "",
+  JWT_LOGIN_KEY: "JWT_LOGIN_KEY",
+  NODE_ENV: "development",
+  PORT: "4000",
+  BASE_URL: "http://localhost:4000",
+  BACKBLAZE_B2_KEY_ID: "",
+  BACKBLAZE_B2_KEY: "",
+  BACKBLAZE_B2_REGION: "",
+  BACKBLAZE_B2_BUCKET_NAME: "geothermal-dev",
+};
 
 const PRODUCTION = "production";
 const TEST = "test";
 
-type Env = {
-  [key in typeof keys[number]]: string;
-};
+type KeyType = keyof typeof env;
+
+dotenv.config({purge_dotenv: true});
+
+function validKey(key: string): key is KeyType {
+  return key in env;
+}
+
+for (const [key, value] of Object.entries(process.env)) {
+  if (validKey(key) && value !== null && value !== undefined) {
+    env[key] = value;
+  }
+}
+
+for (const [key, value] of Object.entries(env)) {
+  if (!value) {
+    log.warn(`🛑 Environment variable ${key} is empty!`);
+  } else if (!isProduction()) {
+    log.debug(`${key}: ${value}`);
+  }
+}
 
 export function isProduction() {
   return env.NODE_ENV?.toLowerCase() === PRODUCTION;
@@ -26,17 +48,4 @@ export function isTest() {
 
 export function isDevelopment() {
   return !isProduction() && !isTest();
-}
-
-dotenv.config({purge_dotenv: true});
-export const env = Object.fromEntries(
-  Object.keys(process.env).map((key) => [key, process.env[key] ?? ""]),
-) as Env;
-for (const key of keys) {
-  const value = env[key];
-  if (!value) {
-    log.warn(`🛑 Environment variable ${key} is empty!`);
-  } else if (!isProduction()) {
-    log.debug(`${key}: ${value}`);
-  }
 }

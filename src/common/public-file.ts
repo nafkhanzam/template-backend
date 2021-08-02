@@ -3,7 +3,7 @@ import {env} from "@/env";
 import {PublicFileManager} from "@nafkhanzam/backend-utils";
 
 export const publicFileManager = new PublicFileManager(
-  env.PUBLIC_BASE_URL,
+  env.BASE_URL,
   constants.UPLOAD_FOLDER,
   {
     signs: "signs",

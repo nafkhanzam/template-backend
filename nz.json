@@ -8,5 +8,13 @@
       "globs": ["src/graphql/**/*.ts"],
       "output": "src/graphql/index.ts"
     }
+  ],
+  "gen-urls": [
+    {
+      "path": "src/storage/",
+      "output": "src/common/fileurls.ts",
+      "variable": "fileurls",
+      "prefix": ""
+    }
   ]
 }

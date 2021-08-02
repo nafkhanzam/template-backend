@@ -2,7 +2,7 @@ module.exports = {
   preset: "ts-jest",
   globals: {
     "ts-jest": {
-      diagnostics: {warnOnly: true},
+      // diagnostics: {warnOnly: true},
     },
   },
   reporters: ["default", "jest-html-reporters"],

@@ -2,9 +2,10 @@ import {Logger} from "@nafkhanzam/backend-utils";
 import {PrismaClient} from "@prisma/client";
 import * as express from "express";
 import {EndpointsFactory} from "express-zod-api";
+import {ApiResponse} from "express-zod-api/dist/helpers";
 import {ClientApi} from "./client/api";
 import * as utils from "./common";
-import {AccessTokenJWT} from "./common";
+import {AccessTokenJWT, Role} from "./common";
 import {DBConfig} from "./config/config";
 
 export type ContextMiddleware = (conn: {
@@ -20,9 +21,15 @@ export type Context = {
   log: Logger;
   api: ClientApi;
   conf: DBConfig;
-  utils: typeof utils;
   req: express.Request;
   res: express.Response;
+  auth: (...roles: Role[]) => AccessTokenJWT;
+  utils: typeof utils;
 };
 
-export type FactoryContext = EndpointsFactory<{}, Context>;
+export type FactoryContext = EndpointsFactory<
+  unknown,
+  Context,
+  ApiResponse,
+  ApiResponse
+>;

@@ -9,6 +9,7 @@ import * as express from "express";
 import {
   attachRouting,
   ConfigType,
+  defaultResultHandler,
   EndpointsFactory,
   OpenAPI,
   Routing,
@@ -21,8 +22,8 @@ export class RestApiApplication extends BaseApp {
   private factory: FactoryContext;
   constructor(db: PrismaClient, getContext: ContextMiddleware) {
     super(db, getContext);
-    this.factory = new EndpointsFactory().addMiddleware({
-      input: z.object({}).passthrough(),
+    this.factory = new EndpointsFactory(defaultResultHandler).addMiddleware({
+      input: z.object({}),
       middleware: async ({request, response}) => {
         return getContext({req: request, res: response});
       },
@@ -50,8 +51,8 @@ export class RestApiApplication extends BaseApp {
       routing: this.getRouting(),
       title: pkg.name,
       version: pkg.version,
-      serverUrl: `${env.PUBLIC_BASE_URL}`,
-    }).builder.getSpecAsYaml();
+      serverUrl: `${env.BASE_URL}`,
+    }).getSpecAsYaml();
     await fs.ensureFile(constants.OPENAPI_YAML);
     await fs.writeFile(constants.OPENAPI_YAML, spec, "utf8");
   }

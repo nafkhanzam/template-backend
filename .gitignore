@@ -11,3 +11,4 @@ build
 logs
 jest_html_reporters.html
 .npmrc
+!.env*.template
